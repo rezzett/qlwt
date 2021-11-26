@@ -53,7 +53,8 @@ public:
     }
 
     void loadCurrentLesson(const QString& lessonName) {
-        std::copy_if(records.begin(), records.end(), std::back_inserter(currentLesson), [&lessonName](WordPair item) {
+        currentLesson.clear();
+        std::copy_if(records.begin(), records.end(), std::back_inserter(currentLesson), [&lessonName](const WordPair& item) {
             return item.lesson == lessonName;
         });
     }
@@ -69,6 +70,15 @@ public:
     void addLessonRecord(const WordPair& wp) {
         currentLesson.append(wp);
         records.append(wp);
+    }
+
+    void deletelLessonRecord(const QString& toRemove) {
+        currentLesson.erase( std::remove_if(currentLesson.begin(), currentLesson.end(), [&toRemove]( const WordPair& wp) {
+             return wp.word == toRemove;
+        }), currentLesson.end());
+        records.erase( std::remove_if(records.begin(), records.end(), [&toRemove]( const WordPair& wp) {
+             return wp.word == toRemove;
+        }), records.end());
     }
 
     void loadLessons() {

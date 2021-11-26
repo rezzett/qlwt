@@ -50,6 +50,7 @@ void MainWindow::on_lessonsList_itemClicked(QListWidgetItem *item)
     ui->translatedInput->setDisabled(false);
     storage.loadCurrentLesson(lessonName);
     auto currentLesson = storage.getCurrentLesson();
+    ui->wordsList->clear();
     for(auto& wp: currentLesson) ui->wordsList->addItem(wp.word);
 
 }
@@ -92,4 +93,10 @@ void MainWindow::on_addWordPairBtn_clicked()
     ui->wordsList->addItem(ui->wordInput->text());
     ui->wordInput->setText("");
     ui->translatedInput->setText("");
+}
+
+void MainWindow::on_wordsList_itemDoubleClicked(QListWidgetItem *item)
+{
+   storage.deletelLessonRecord(item->text());
+   delete item;
 }

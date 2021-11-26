@@ -34,6 +34,8 @@ private slots:
 
     void on_addWordPairBtn_clicked();
 
+    void on_wordsList_itemDoubleClicked(QListWidgetItem *item);
+
 private:
     Ui::MainWindow *ui;
     QString lessonName = "No Lesson";
