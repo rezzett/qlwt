@@ -88,6 +88,16 @@ public:
         }
     }
 
+    void removeLesson(const QString& lesssonName) {
+        lessons.erase(std::remove_if(lessons.begin(), lessons.end(), [&lesssonName](const QString& name) {
+            return lesssonName == name;
+        }), lessons.end());
+
+        records.erase(std::remove_if(records.begin(), records.end(), [&lesssonName](const WordPair& item) {
+            return item.lesson == lesssonName;
+        }), records.end());
+    }
+
 };
 
 #endif // STORAGE_H

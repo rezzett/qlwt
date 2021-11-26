@@ -59,6 +59,8 @@ void MainWindow::on_lessonsList_itemDoubleClicked(QListWidgetItem *item)
 {
     // TODO  create func for update titles
     if(lessonName == item->text()) {
+        storage.removeLesson(lessonName);
+        ui->wordsList->clear();
         lessonName = "No Lesson";
         ui->addLessonTitle->setText(lessonName);
         ui->wordInput->setDisabled(true);
