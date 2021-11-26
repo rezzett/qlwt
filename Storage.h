@@ -5,6 +5,7 @@
 #include <QVector>
 #include <QFile>
 #include <algorithm>
+#include <QDebug>
 
 struct WordPair {
     QString word;
@@ -57,7 +58,7 @@ public:
         });
     }
 
-    QVector<WordPair> getCurrentLesson() const {
+    const QVector<WordPair>& getCurrentLesson() const {
         return currentLesson;
     }
 

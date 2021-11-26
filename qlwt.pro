@@ -20,6 +20,7 @@ SOURCES += \
     mainwindow.cpp
 
 HEADERS += \
+    Storage.h \
     mainwindow.h
 
 FORMS += \

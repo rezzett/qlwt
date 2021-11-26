@@ -1,20 +1,28 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <iostream>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    storage.load();
+    storage.loadLessons();
     ui->setupUi(this);
     ui->addLessonBtn->setDisabled(true);
     ui->wordInput->setDisabled(true);
     ui->translatedInput->setDisabled(true);
     ui->addWordPairBtn->setDisabled(true);
+    auto lessons = storage.getLessons();
+    for(auto& lesson: lessons) {
+        ui->lessonsList->addItem(lesson);
+    }
 }
 
 MainWindow::~MainWindow()
 {
+    storage.save();
     delete ui;
 }
 
@@ -35,10 +43,14 @@ void MainWindow::on_addLessonBtn_clicked()
 
 void MainWindow::on_lessonsList_itemClicked(QListWidgetItem *item)
 {
+    if(lessonName == item->text()) return;
     lessonName = item->text();
     ui->addLessonTitle->setText(lessonName);
     ui->wordInput->setDisabled(false);
     ui->translatedInput->setDisabled(false);
+    storage.loadCurrentLesson(lessonName);
+    auto currentLesson = storage.getCurrentLesson();
+    for(auto& wp: currentLesson) ui->wordsList->addItem(wp.word);
 
 }
 
@@ -72,4 +84,12 @@ void MainWindow::on_translatedInput_textChanged(const QString &str)
     else
         ui->addWordPairBtn->setDisabled(true);
 
+}
+
+void MainWindow::on_addWordPairBtn_clicked()
+{
+    storage.addLessonRecord(WordPair(ui->wordInput->text(),ui->translatedInput->text(), lessonName));
+    ui->wordsList->addItem(ui->wordInput->text());
+    ui->wordInput->setText("");
+    ui->translatedInput->setText("");
 }

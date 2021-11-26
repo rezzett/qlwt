@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QListWidgetItem>
 #include <QListView>
+#include "Storage.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,8 +32,11 @@ private slots:
 
     void on_translatedInput_textChanged(const QString &arg1);
 
+    void on_addWordPairBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString lessonName = "No Lesson";
+    Storage storage;
 };
 #endif // MAINWINDOW_H
