@@ -14,6 +14,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->wordInput->setDisabled(true);
     ui->translatedInput->setDisabled(true);
     ui->addWordPairBtn->setDisabled(true);
+    ui->okBtn->setDisabled(true);
+    ui->hintBtn->setDisabled(true);
+    ui->answerInput->setDisabled(true);
     auto lessons = storage.getLessons();
     for(auto& lesson: lessons) {
         ui->lessonsList->addItem(lesson);
@@ -59,7 +62,7 @@ void MainWindow::on_lessonsList_itemDoubleClicked(QListWidgetItem *item)
 {
     // TODO  create func for update titles
     if(lessonName == item->text()) {
-        storage.removeLesson(lessonName);
+        storage.removeLesson(lessonName); // FIXXXXXXXXXXXXXXXXXXXXX after restart lesson with word restore
         ui->wordsList->clear();
         lessonName = "No Lesson";
         ui->addLessonTitle->setText(lessonName);
@@ -101,4 +104,47 @@ void MainWindow::on_wordsList_itemDoubleClicked(QListWidgetItem *item)
 {
    storage.deletelLessonRecord(item->text());
    delete item;
+}
+
+void MainWindow::on_startTrainBtn_clicked()
+{
+    if(storage.getCurrentLesson().size() > 0) {
+        trainingLesson = storage.getCurrentLesson();
+        rnd = rand() % trainingLesson.size();
+        ui->askLbl->setText(trainingLesson[rnd].word);
+        ui->startTrainBtn->setDisabled(true);
+        ui->answerInput->setDisabled(false);
+
+    } else {
+        QMessageBox::information(this,"No Lesson","Choose some lesson first!");
+    }
+
+}
+
+void MainWindow::on_answerInput_textChanged(const QString &str)
+{
+    if(str.isEmpty()) ui->okBtn->setDisabled(true);
+    else ui->okBtn->setDisabled(false);
+}
+
+void MainWindow::on_okBtn_clicked()
+{
+   if(trainingLesson[rnd].translated == ui->answerInput->text()) {
+       ui->susccessLbl->setText("Success!");
+       trainingLesson.erase(trainingLesson.begin() + rnd);
+       // check is empty
+       if(!trainingLesson.isEmpty()) {
+           rnd = rand() % trainingLesson.size();
+           ui->askLbl->setText(trainingLesson[rnd].word);
+           ui->answerInput->setText("");
+       } else {
+           ui->askLbl->setText("There are no words left");
+           ui->answerInput->setText("");
+           ui->okBtn->setDisabled(true);
+           ui->startTrainBtn->setDisabled(false);
+       }
+   } else {
+
+       ui->susccessLbl->setText("Failed!");
+   }
 }

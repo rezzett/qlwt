@@ -63,6 +63,10 @@ public:
         return currentLesson;
     }
 
+    QVector<WordPair> getCurrentLesson() {
+        return currentLesson;
+    }
+
     const QVector<QString>& getLessons() const {
         return lessons;
     }
@@ -96,6 +100,7 @@ public:
         records.erase(std::remove_if(records.begin(), records.end(), [&lesssonName](const WordPair& item) {
             return item.lesson == lesssonName;
         }), records.end());
+        currentLesson.clear();
     }
 
 };
