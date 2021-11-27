@@ -45,11 +45,14 @@ private slots:
 
     void on_okBtn_clicked();
 
+    void on_hintBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString lessonName = "No Lesson";
     Storage storage;
     QVector<WordPair> trainingLesson;
     int rnd;
+    int hints, errors;
 };
 #endif // MAINWINDOW_H

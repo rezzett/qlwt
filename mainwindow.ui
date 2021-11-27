@@ -38,6 +38,9 @@
     <property name="currentIndex">
      <number>2</number>
     </property>
+    <property name="tabBarAutoHide">
+     <bool>false</bool>
+    </property>
     <widget class="QWidget" name="lessonsTab">
      <attribute name="title">
       <string>Lessons</string>
@@ -178,7 +181,7 @@
      <widget class="QLabel" name="wordCountLbl">
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>140</x>
         <y>0</y>
         <width>121</width>
         <height>31</height>
@@ -258,9 +261,9 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>60</y>
+        <y>80</y>
         <width>361</width>
-        <height>71</height>
+        <height>51</height>
        </rect>
       </property>
       <property name="font">
@@ -269,7 +272,7 @@
        </font>
       </property>
       <property name="text">
-       <string>success</string>
+       <string/>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -323,7 +326,7 @@
        <string>Ctrl+H</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_7">
+     <widget class="QLabel" name="hintLbl">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -333,7 +336,23 @@
        </rect>
       </property>
       <property name="text">
-       <string>hint</string>
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="lessonIntrainLbl">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>450</y>
+        <width>391</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>

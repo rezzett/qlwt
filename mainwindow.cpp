@@ -5,7 +5,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainWindow), hints(0), errors(0)
 {
     storage.load();
     storage.loadLessons();
@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->okBtn->setDisabled(true);
     ui->hintBtn->setDisabled(true);
     ui->answerInput->setDisabled(true);
+    ui->lessonIntrainLbl->setText(lessonName);
     auto lessons = storage.getLessons();
     for(auto& lesson: lessons) {
         ui->lessonsList->addItem(lesson);
@@ -49,6 +50,7 @@ void MainWindow::on_lessonsList_itemClicked(QListWidgetItem *item)
     if(lessonName == item->text()) return;
     lessonName = item->text();
     ui->addLessonTitle->setText(lessonName);
+    ui->lessonIntrainLbl->setText(lessonName);
     ui->wordInput->setDisabled(false);
     ui->translatedInput->setDisabled(false);
     storage.loadCurrentLesson(lessonName);
@@ -109,11 +111,17 @@ void MainWindow::on_wordsList_itemDoubleClicked(QListWidgetItem *item)
 void MainWindow::on_startTrainBtn_clicked()
 {
     if(storage.getCurrentLesson().size() > 0) {
+        hints = errors = 0;
+        ui->hintUsageLbl->setText("Hints: 0");
+        ui->errCountLbl->setText("Errors: 0");
         trainingLesson = storage.getCurrentLesson();
         rnd = rand() % trainingLesson.size();
-        ui->askLbl->setText(trainingLesson[rnd].word);
+        ui->askLbl->setText(trainingLesson[rnd].translated);
+        ui->wordCountLbl->setText("Words: " + QString::number(trainingLesson.size()) + "/" + QString::number(storage.getCurrentLesson().size()));
         ui->startTrainBtn->setDisabled(true);
         ui->answerInput->setDisabled(false);
+        ui->hintBtn->setDisabled(false);
+        ui->answerInput->setFocus();
 
     } else {
         QMessageBox::information(this,"No Lesson","Choose some lesson first!");
@@ -129,22 +137,36 @@ void MainWindow::on_answerInput_textChanged(const QString &str)
 
 void MainWindow::on_okBtn_clicked()
 {
-   if(trainingLesson[rnd].translated == ui->answerInput->text()) {
+    ui->hintLbl->setText("");
+   if(trainingLesson[rnd].word == ui->answerInput->text()) {
        ui->susccessLbl->setText("Success!");
+       ui->susccessLbl->setStyleSheet("QLabel {color : green; }");
        trainingLesson.erase(trainingLesson.begin() + rnd);
-       // check is empty
-       if(!trainingLesson.isEmpty()) {
-           rnd = rand() % trainingLesson.size();
-           ui->askLbl->setText(trainingLesson[rnd].word);
-           ui->answerInput->setText("");
-       } else {
-           ui->askLbl->setText("There are no words left");
-           ui->answerInput->setText("");
-           ui->okBtn->setDisabled(true);
-           ui->startTrainBtn->setDisabled(false);
-       }
+       ui->wordCountLbl->setText("Words: " + QString::number(trainingLesson.size()) + "/" + QString::number(storage.getCurrentLesson().size()));
    } else {
-
        ui->susccessLbl->setText("Failed!");
+       ui->susccessLbl->setStyleSheet("QLabel {color : red; }");
+       ui->errCountLbl->setText("Errors: " + QString::number(++errors));
    }
+
+   if(!trainingLesson.isEmpty()) {
+       rnd = rand() % trainingLesson.size();
+       ui->askLbl->setText(trainingLesson[rnd].translated);
+       ui->answerInput->setText("");
+   } else {
+       ui->askLbl->setText("There are no words left");
+       ui->susccessLbl->setStyleSheet("QLabel {color : ; }");
+       ui->susccessLbl->setText("");
+       ui->answerInput->setText("");
+       ui->okBtn->setDisabled(true);
+       ui->hintBtn->setDisabled(true);
+       ui->startTrainBtn->setDisabled(false);
+       ui->answerInput->setDisabled(true);
+   }
+}
+
+void MainWindow::on_hintBtn_clicked()
+{
+    ui->hintLbl->setText(trainingLesson[rnd].word);
+    ui->hintUsageLbl->setText("Hints: " + QString::number(++hints));
 }
