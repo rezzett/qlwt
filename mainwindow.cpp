@@ -64,7 +64,7 @@ void MainWindow::on_lessonsList_itemDoubleClicked(QListWidgetItem *item)
 {
     // TODO  create func for update titles
     if(lessonName == item->text()) {
-        storage.removeLesson(lessonName); // FIXXXXXXXXXXXXXXXXXXXXX after restart lesson with word restore
+        storage.removeLesson(lessonName); // FIXXXXXXXXXXXXXXXXXXXXX after restart lesson with word restore fix word delete
         ui->wordsList->clear();
         lessonName = "No Lesson";
         ui->addLessonTitle->setText(lessonName);
