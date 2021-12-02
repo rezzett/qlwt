@@ -36,11 +36,11 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(211, 215, 207);
+     <string notr="true">color: rgb(85, 87, 83);
 </string>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>2</number>
     </property>
     <property name="tabBarAutoHide">
      <bool>false</bool>
