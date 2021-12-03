@@ -6,12 +6,15 @@
 #include <QFile>
 #include <algorithm>
 #include <QDebug>
+#include <QMessageBox>
 
 struct WordPair {
     QString word;
     QString translated;
     WordPair(const QString& w = "", const QString& t = ""):
         word(w), translated(t){}
+
+    bool operator == (const WordPair& other) const {return  word == other.word;}
 };
 
 inline QDataStream& operator << (QDataStream& out, const WordPair& wp) {
@@ -108,8 +111,9 @@ public:
 
     // training words interface =====================================
     void setUpTrainingWords() {
-        trainingWords = words;
+        std::copy(words.begin(), words.end(), std::back_inserter(trainingWords));
     }
+
 
     const QVector<WordPair>& getTrainingWords() const { return trainingWords; }
 

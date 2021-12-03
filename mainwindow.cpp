@@ -39,6 +39,10 @@ void MainWindow::on_addLesonInput_textChanged(const QString &str)
 
 void MainWindow::on_addLessonBtn_clicked()
 {
+    if(storage.getLessons().contains(ui->addLesonInput->text())) {
+        QMessageBox::information(this, "Wrong Lesson Name", "Lesson " +  ui->addLesonInput->text() + " is already exists!\n Try another name.");
+        return;
+    }
     ui->lessonsList->addItem(ui->addLesonInput->text());
     storage.addLesson(ui->addLesonInput->text());
     ui->addLesonInput->setText("");
@@ -47,7 +51,6 @@ void MainWindow::on_addLessonBtn_clicked()
 
 void MainWindow::on_lessonsList_itemClicked(QListWidgetItem *item)
 {
-    // TODO chek lesson duplicate
     if(lessonName == item->text()) return;
     lessonName = item->text();
     ui->addLessonTitle->setText(lessonName);
@@ -55,7 +58,6 @@ void MainWindow::on_lessonsList_itemClicked(QListWidgetItem *item)
     ui->wordInput->setDisabled(false);
     ui->translatedInput->setDisabled(false);
     storage.loadWords(item->text());
-    storage.setUpTrainingWords();
     auto words = storage.getWords();
     ui->wordsList->clear();
     for(auto& w: words) ui->wordsList->addItem(w.word);
@@ -63,11 +65,12 @@ void MainWindow::on_lessonsList_itemClicked(QListWidgetItem *item)
 }
 
 
-// TODO clear word list
 void MainWindow::on_lessonsList_itemDoubleClicked(QListWidgetItem *item)
 {
     storage.deleteLesson(item->text());
+    ui->wordsList->clear();
     delete item;
+    if(storage.getLessons().size() == 0) lessonName = "No Lesson";
 }
 
 void MainWindow::on_wordInput_textChanged(const QString &str)
@@ -90,6 +93,10 @@ void MainWindow::on_translatedInput_textChanged(const QString &str)
 
 void MainWindow::on_addWordPairBtn_clicked()
 {
+    if(storage.getWords().contains(ui->wordInput->text())) {
+        QMessageBox::information(this, "Word is already exists", "World " +  ui->wordInput->text() + " is already existsis.");
+        return;
+    }
     storage.addWord(WordPair(ui->wordInput->text(),ui->translatedInput->text()), lessonName);
     ui->wordsList->addItem(ui->wordInput->text());
     ui->wordInput->setText("");
@@ -104,13 +111,17 @@ void MainWindow::on_wordsList_itemDoubleClicked(QListWidgetItem *item)
 
 void MainWindow::on_startTrainBtn_clicked()
 {
-    if(storage.getTrainingSize() > 0) {
+    if(lessonName != "No Lesson") {
+        storage.setUpTrainingWords();
         hints = errors = 0;
+        if(storage.getTrainingSize() < 1) {
+            QMessageBox::information(this,"No Words Left","There are no words left!\nChoose another lesson or add new word");
+            return;
+         }
         ui->hintUsageLbl->setText("Hints: 0");
         ui->errCountLbl->setText("Errors: 0");
-        storage.setUpTrainingWords();
-        rnd = rand() % trainingLesson.size();
-        ui->askLbl->setText(trainingLesson[rnd].translated);
+        rnd = rand() % storage.getTrainingSize();
+        ui->askLbl->setText(storage.getTrainingWords()[rnd].translated);
         ui->wordCountLbl->setText("Words: " + QString::number(storage.getTrainingSize()) + "/" + QString::number(storage.getWordsSize()));
         ui->startTrainBtn->setDisabled(true);
         ui->answerInput->setDisabled(false);
@@ -129,13 +140,13 @@ void MainWindow::on_answerInput_textChanged(const QString &str)
     else ui->okBtn->setDisabled(false);
 }
 
-void MainWindow::on_okBtn_clicked()
+void MainWindow::on_okBtn_clicked() // FIX
 {
     ui->hintLbl->setText("");
-   if(trainingLesson[rnd].word == ui->answerInput->text()) {
+   if(storage.getTrainingWords()[rnd].word == ui->answerInput->text()) {
        ui->susccessLbl->setText("Success!");
        ui->susccessLbl->setStyleSheet("QLabel {color : green; }");
-       trainingLesson.erase(trainingLesson.begin() + rnd);
+       storage.removeTrainingWord(rnd);
        ui->wordCountLbl->setText("Words: " + QString::number(storage.getTrainingSize()) + "/" + QString::number(storage.getWordsSize()));
    } else {
        ui->susccessLbl->setText("Failed!");
@@ -143,9 +154,9 @@ void MainWindow::on_okBtn_clicked()
        ui->errCountLbl->setText("Errors: " + QString::number(++errors));
    }
 
-   if(!trainingLesson.isEmpty()) {
-       rnd = rand() % trainingLesson.size();
-       ui->askLbl->setText(trainingLesson[rnd].translated);
+   if(storage.getTrainingSize() > 0) {
+       rnd = rand() % storage.getTrainingSize();
+       ui->askLbl->setText(storage.getTrainingWords()[rnd].translated);
        ui->answerInput->setText("");
    } else {
        ui->askLbl->setText("There are no words left");
@@ -161,6 +172,6 @@ void MainWindow::on_okBtn_clicked()
 
 void MainWindow::on_hintBtn_clicked()
 {
-    ui->hintLbl->setText(trainingLesson[rnd].word);
+    ui->hintLbl->setText(storage.getTrainingWords()[rnd].word);
     ui->hintUsageLbl->setText("Hints: " + QString::number(++hints));
 }
