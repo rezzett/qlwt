@@ -47,16 +47,23 @@ void MainWindow::on_addLessonBtn_clicked()
 
 void MainWindow::on_lessonsList_itemClicked(QListWidgetItem *item)
 {
+    // TODO chek lesson duplicate
     if(lessonName == item->text()) return;
     lessonName = item->text();
     ui->addLessonTitle->setText(lessonName);
     ui->lessonIntrainLbl->setText(lessonName);
     ui->wordInput->setDisabled(false);
     ui->translatedInput->setDisabled(false);
+    storage.loadWords(item->text());
     storage.setUpTrainingWords();
+    auto words = storage.getWords();
+    ui->wordsList->clear();
+    for(auto& w: words) ui->wordsList->addItem(w.word);
 
 }
 
+
+// TODO clear word list
 void MainWindow::on_lessonsList_itemDoubleClicked(QListWidgetItem *item)
 {
     storage.deleteLesson(item->text());
@@ -83,7 +90,7 @@ void MainWindow::on_translatedInput_textChanged(const QString &str)
 
 void MainWindow::on_addWordPairBtn_clicked()
 {
-    //storage.addLessonRecord(WordPair(ui->wordInput->text(),ui->translatedInput->text(), lessonName));
+    storage.addWord(WordPair(ui->wordInput->text(),ui->translatedInput->text()), lessonName);
     ui->wordsList->addItem(ui->wordInput->text());
     ui->wordInput->setText("");
     ui->translatedInput->setText("");

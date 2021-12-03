@@ -31,6 +31,7 @@ class Storage {
 public:
     // save and load  =====================================
     void loadWords(const QString& lessonName) {
+        words.clear();
         QFile readFile(lessonName +".txt");
         readFile.open(QFile::ReadOnly);
         QDataStream rf(&readFile);
