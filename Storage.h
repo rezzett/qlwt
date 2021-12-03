@@ -44,7 +44,7 @@ public:
 
     void saveWords(const QString& lessonName) {
         QFile writeFile(lessonName + ".txt");
-        writeFile.open(QFile::ReadWrite);
+        writeFile.open(QFile::WriteOnly);
         QDataStream wf(&writeFile);
         for(auto& word: words) {
             wf << word;
@@ -52,6 +52,7 @@ public:
         writeFile.close();
     }
 
+    // lessons interface =====================================
     void loadLessons() {
         QFile readFile("lessons.txt");
         readFile.open(QFile::ReadOnly);
@@ -64,10 +65,9 @@ public:
         readFile.close();
     }
 
-    // lessons interface =====================================
     void saveLessons() {
         QFile writeFile("lessons.txt");
-        writeFile.open(QFile::ReadWrite);
+        writeFile.open(QFile::WriteOnly);
         QDataStream wf(&writeFile);
         for(auto& lesson: lessons) {
             wf << lesson;
@@ -75,21 +75,23 @@ public:
         writeFile.close();
     }
 
-    const QVector<Qstring>& getLessons() const { return lessons;}
+    const QVector<QString>& getLessons() const { return lessons;}
 
     void addLesson(const QString& newLesson) {
+        QFile file(newLesson + ".txt");
+        file.open(QFile::ReadWrite);
+        file.close();
         lessons.push_back(newLesson);
-        saveLessons();
     }
 
     void deleteLesson(const QString& delName) {
-        lessons.erase(std::remove_if(lesson.begin(), lessons.end(), [&delName](const QString& item){ return item == delName;}));
+        lessons.erase(std::remove_if(lessons.begin(), lessons.end(), [&delName](const QString& item){ return item == delName;}), lessons.end());
+        qDebug() << lessons.size();
         QFile::remove(delName + ".txt");
-        saveLessons();
     }
 
     // words interface =====================================
-    const QVector<QString>& getWords() const { return words; }
+    const QVector<WordPair>& getWords() const { return words; }
 
     int getWordsSize() const { return words.size(); }
 
@@ -98,8 +100,8 @@ public:
         saveWords(lessonName);
     }
 
-    void deleteWord(const QString& delName, const Qstring& lessonName) {
-        lessons.erase(std::remove_if(words.begin(), words.end(), [&delName](const WordPair& item){ return item.word == delName;}));
+    void deleteWord(const QString& delName, const QString& lessonName) {
+        words.erase(std::remove_if(words.begin(), words.end(), [&delName](const WordPair& item){ return item.word == delName;}), words.end());
         saveWords(lessonName);
     }
 
@@ -115,11 +117,6 @@ public:
     void removeTrainingWord(int idx) {
         trainingWords.erase(trainingWords.begin() + idx);
     }
-
-
-
-
-
 
 };
 

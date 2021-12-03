@@ -22,6 +22,30 @@ public:
     ~MainWindow();
 
 private slots:
+    void on_addLesonInput_textChanged(const QString &arg1);
+
+    void on_addLessonBtn_clicked();
+
+
+    void on_lessonsList_itemClicked(QListWidgetItem *item);
+
+    void on_lessonsList_itemDoubleClicked(QListWidgetItem *item);
+
+    void on_wordInput_textChanged(const QString &arg1);
+
+    void on_translatedInput_textChanged(const QString &arg1);
+
+    void on_addWordPairBtn_clicked();
+
+    void on_wordsList_itemDoubleClicked(QListWidgetItem *item);
+
+    void on_startTrainBtn_clicked();
+
+    void on_answerInput_textChanged(const QString &arg1);
+
+    void on_okBtn_clicked();
+
+    void on_hintBtn_clicked();
 
 private:
     Ui::MainWindow *ui;
