@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <iostream>
-#include <QDebug>
+#include <QApplication>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->answerInput->setDisabled(true);
     ui->lessonIntrainLbl->setText(lessonName);
     auto lessons = storage.getLessons();
-    qDebug() << "MainWindow " << lessons.size();
     for(auto& lesson: lessons) {
         ui->lessonsList->addItem(lesson);
     }
@@ -140,8 +139,7 @@ void MainWindow::on_answerInput_textChanged(const QString &str)
     else ui->okBtn->setDisabled(false);
 }
 
-void MainWindow::on_okBtn_clicked() // FIX
-{
+void MainWindow::on_okBtn_clicked() {
     ui->hintLbl->setText("");
    if(storage.getTrainingWords()[rnd].word == ui->answerInput->text()) {
        ui->susccessLbl->setText("Success!");
@@ -174,4 +172,10 @@ void MainWindow::on_hintBtn_clicked()
 {
     ui->hintLbl->setText(storage.getTrainingWords()[rnd].word);
     ui->hintUsageLbl->setText("Hints: " + QString::number(++hints));
+}
+
+void MainWindow::on_changeTheme_currentTextChanged(const QString &themeName)
+{
+    storage.saveTheme(themeName);
+    QMessageBox::information(this, "Change Theme", "Restart application to\n apply changes.");
 }

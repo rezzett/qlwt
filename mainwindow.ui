@@ -36,15 +36,18 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(136, 138, 133);</string>
+     <string notr="true">color: rgb(46, 52, 54);</string>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>4</number>
     </property>
     <property name="tabBarAutoHide">
      <bool>false</bool>
     </property>
     <widget class="QWidget" name="lessonsTab">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(136, 138, 133);</string>
+     </property>
      <attribute name="title">
       <string>Lessons</string>
      </attribute>
@@ -381,6 +384,49 @@
      <attribute name="title">
       <string>Settings</string>
      </attribute>
+     <widget class="QComboBox" name="changeTheme">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>50</y>
+        <width>371</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <item>
+       <property name="text">
+        <string>Combinear</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Fibrary</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Devsion</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>SyNet</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="themeLbl">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>151</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Theme:</string>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>

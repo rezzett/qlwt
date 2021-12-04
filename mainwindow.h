@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include <QListWidgetItem>
 #include <QListView>
-#include <QRandomGenerator>
 #include <QMessageBox>
 #include <ctime>
 #include "Storage.h"
@@ -46,6 +45,8 @@ private slots:
     void on_okBtn_clicked();
 
     void on_hintBtn_clicked();
+
+    void on_changeTheme_currentTextChanged(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;

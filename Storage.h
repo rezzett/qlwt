@@ -1,12 +1,15 @@
 #ifndef STORAGE_H
 #define STORAGE_H
+
 #include <QString>
 #include <QDataStream>
 #include <QVector>
 #include <QFile>
 #include <algorithm>
-#include <QDebug>
 #include <QMessageBox>
+#include <QTextStream>
+
+const QString appPath("qlwtdata/");
 
 struct WordPair {
     QString word;
@@ -35,7 +38,7 @@ public:
     // save and load  =====================================
     void loadWords(const QString& lessonName) {
         words.clear();
-        QFile readFile(lessonName +".txt");
+        QFile readFile(appPath + lessonName +".txt");
         readFile.open(QFile::ReadOnly);
         QDataStream rf(&readFile);
         while(!rf.atEnd()) {
@@ -47,7 +50,7 @@ public:
     }
 
     void saveWords(const QString& lessonName) {
-        QFile writeFile(lessonName + ".txt");
+        QFile writeFile(appPath + lessonName + ".txt");
         writeFile.open(QFile::WriteOnly);
         QDataStream wf(&writeFile);
         for(auto& word: words) {
@@ -58,7 +61,7 @@ public:
 
     // lessons interface =====================================
     void loadLessons() {
-        QFile readFile("lessons.txt");
+        QFile readFile(appPath + "lessons.txt");
         readFile.open(QFile::ReadOnly);
         QDataStream rf(&readFile);
         while(!rf.atEnd()) {
@@ -70,7 +73,7 @@ public:
     }
 
     void saveLessons() {
-        QFile writeFile("lessons.txt");
+        QFile writeFile(appPath + "lessons.txt");
         writeFile.open(QFile::WriteOnly);
         QDataStream wf(&writeFile);
         for(auto& lesson: lessons) {
@@ -82,7 +85,7 @@ public:
     const QVector<QString>& getLessons() const { return lessons;}
 
     void addLesson(const QString& newLesson) {
-        QFile file(newLesson + ".txt");
+        QFile file(appPath + newLesson + ".txt");
         file.open(QFile::ReadWrite);
         file.close();
         lessons.push_back(newLesson);
@@ -90,7 +93,6 @@ public:
 
     void deleteLesson(const QString& delName) {
         lessons.erase(std::remove_if(lessons.begin(), lessons.end(), [&delName](const QString& item){ return item == delName;}), lessons.end());
-        qDebug() << lessons.size();
         QFile::remove(delName + ".txt");
     }
 
@@ -121,6 +123,15 @@ public:
 
     void removeTrainingWord(int idx) {
         trainingWords.erase(trainingWords.begin() + idx);
+    }
+
+    // theme interface =====================================
+    void saveTheme(const QString& themeName) {
+        QFile theme(appPath + "theme.txt");
+        theme.open(QFile::WriteOnly);
+        QTextStream stream(&theme);
+        stream << themeName;
+        theme.close();
     }
 
 };
