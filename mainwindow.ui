@@ -36,8 +36,7 @@
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">color: rgb(85, 87, 83);
-</string>
+     <string notr="true">color: rgb(136, 138, 133);</string>
     </property>
     <property name="currentIndex">
      <number>1</number>
@@ -377,6 +376,11 @@
        </rect>
       </property>
      </widget>
+    </widget>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Settings</string>
+     </attribute>
     </widget>
    </widget>
   </widget>
