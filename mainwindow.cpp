@@ -9,6 +9,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     storage.loadLessons();
     ui->setupUi(this);
+
+    ui->changeTheme->setCurrentText(storage.getThemeName());
+
     ui->addLessonBtn->setDisabled(true);
     ui->wordInput->setDisabled(true);
     ui->translatedInput->setDisabled(true);
@@ -17,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->hintBtn->setDisabled(true);
     ui->answerInput->setDisabled(true);
     ui->lessonIntrainLbl->setText(lessonName);
+
     auto lessons = storage.getLessons();
     for(auto& lesson: lessons) {
         ui->lessonsList->addItem(lesson);
@@ -177,5 +181,5 @@ void MainWindow::on_hintBtn_clicked()
 void MainWindow::on_changeTheme_currentTextChanged(const QString &themeName)
 {
     storage.saveTheme(themeName);
-    QMessageBox::information(this, "Change Theme", "Restart application to\n apply changes.");
+    ui->changeTheme->setCurrentText(themeName);
 }

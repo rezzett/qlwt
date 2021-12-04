@@ -30,11 +30,21 @@ inline QDataStream& operator >> (QDataStream& in,  WordPair& wp) {
     return in;
 }
 
+// STORAGE ===========================================================================================================
+
 class Storage {
     QVector<WordPair> words;
     QVector<WordPair> trainingWords;
     QVector<QString> lessons;
+    QString currentTheme;
 public:
+    Storage() {
+        QFile theme(appPath + "theme.txt");
+        theme.open(QFile::ReadOnly);
+        QTextStream stream(&theme);
+        currentTheme = stream.readLine();
+        theme.close();
+    }
     // save and load  =====================================
     void loadWords(const QString& lessonName) {
         words.clear();
@@ -133,6 +143,8 @@ public:
         stream << themeName;
         theme.close();
     }
+
+    const QString& getThemeName() const { return currentTheme; }
 
 };
 
