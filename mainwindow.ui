@@ -39,7 +39,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>3</number>
     </property>
     <property name="tabBarAutoHide">
      <bool>false</bool>
@@ -393,6 +393,22 @@
         <width>371</width>
         <height>421</height>
        </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="wordInLessonCount">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>371</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </widget>

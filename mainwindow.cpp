@@ -64,6 +64,7 @@ void MainWindow::on_lessonsList_itemClicked(QListWidgetItem *item)
     auto words = storage.getWords();
     ui->wordsList->clear();
     for(auto& w: words) ui->wordsList->addItem(w.word);
+    ui->wordInLessonCount->setText(QString::number(storage.getWordsSize()) + " words");
 
 }
 
@@ -104,11 +105,13 @@ void MainWindow::on_addWordPairBtn_clicked()
     ui->wordsList->addItem(ui->wordInput->text());
     ui->wordInput->setText("");
     ui->translatedInput->setText("");
+    ui->wordInLessonCount->setText(QString::number(storage.getWordsSize()) + " words");
 }
 
 void MainWindow::on_wordsList_itemDoubleClicked(QListWidgetItem *item)
 {
    storage.deleteWord(item->text(), lessonName);
+    ui->wordInLessonCount->setText(QString::number(storage.getWordsSize()) + " words");
    delete item;
 }
 
