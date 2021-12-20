@@ -101,7 +101,14 @@ void MainWindow::on_addWordPairBtn_clicked()
         QMessageBox::information(this, "Word is already exists", "World " +  ui->wordInput->text() + " is already existsis.");
         return;
     }
-    storage.addWord(WordPair(ui->wordInput->text(),ui->translatedInput->text()), lessonName);
+
+    QString w = ui->wordInput->text();
+    while(w.startsWith(" ") or w.endsWith(" "))w = w.trimmed();
+    QString t = ui->translatedInput->text();
+    while(t.startsWith(" ") or t.endsWith(" ")) t = t.trimmed();
+    WordPair wp(w, t);
+
+    storage.addWord(wp, lessonName);
     ui->wordsList->addItem(ui->wordInput->text());
     ui->wordInput->setText("");
     ui->translatedInput->setText("");
