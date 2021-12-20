@@ -242,10 +242,10 @@
      <widget class="QLabel" name="askLbl">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>130</y>
+        <x>10</x>
+        <y>30</y>
         <width>381</width>
-        <height>91</height>
+        <height>111</height>
        </rect>
       </property>
       <property name="font">
@@ -254,7 +254,7 @@
        </font>
       </property>
       <property name="text">
-       <string>dddddddddddddddddddddddddddddddddddddddddddddddddddd</string>
+       <string>text</string>
       </property>
       <property name="textFormat">
        <enum>Qt::RichText</enum>
@@ -289,9 +289,9 @@
       <property name="geometry">
        <rect>
         <x>10</x>
-        <y>80</y>
+        <y>150</y>
         <width>361</width>
-        <height>51</height>
+        <height>61</height>
        </rect>
       </property>
       <property name="font">
@@ -304,6 +304,9 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>false</bool>
       </property>
      </widget>
      <widget class="QPushButton" name="startTrainBtn">

@@ -170,6 +170,7 @@ void MainWindow::on_okBtn_clicked() {
        rnd = rand() % storage.getTrainingSize();
        ui->askLbl->setText(storage.getTrainingWords()[rnd].translated);
        ui->answerInput->setText("");
+       ui->answerInput->setFocus();
    } else {
        ui->askLbl->setText("There are no words left");
        ui->susccessLbl->setStyleSheet("QLabel {color : ; }");
